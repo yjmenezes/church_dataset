@@ -15,4 +15,6 @@ for LiDAR
 
 cat xa{a..f} > /tmp/church_dem_las.zip
 
+The LAS LiDAR data has all return pulses. 
+
 2018-01-17
