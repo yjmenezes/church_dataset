@@ -6,12 +6,12 @@
 # 1058dpi = 24.6482microns pixel size
 # verificado posteriormente que dpi=23.9991microns Werlhi RM1
 # adjusted atri_g84= absolute CPs from BINGO=dapor.dat reformated to atri_g84.txt
-# Photo;LatWGS(g.gg);LonWGS(g.gg);AltitudeWGS(m)  
+# Photo;LatWGS(g.gg);LonWGS(g.gg);AltitudeMSL(m)  
 # 01_001.TIF;-8.523805130;-40.043544700;2785.308 
 # 01_002.TIF;-8.523745470;-40.033249954;2784.890
 function ajuda {
-	echo "rodar dentro do diretorio dos TIF. entrada:" 1>&2
-	echo "# Photo;LatWGS(g.gg);LonWGS(g.gg);AltitudeWGS(m)  " 1>&2
+	echo "run inside jpg directory. input:" 1>&2
+	echo "# Photo;LatWGS(g.gg);LonWGS(g.gg);AltitudeMSL(m)  " 1>&2
 	echo "01_001.TIF;-8.523805130;-40.043544700;2785.308 " 1>&2
 	echo $(basename $0) "< atri_g84.txt" 1>&2
 	exit 1
@@ -20,7 +20,7 @@ function ajuda {
 if [ $# -ge 1 ]; then
 	ajuda
 fi
-echo "escrevento tags" 1>&2
+echo "writing tags" 1>&2
 chmod ugo+r-x+w *jpg
 grep -v \# | sed s/\;/\ /g | awk '{ print $1,$2,$3,$4 }' | sed s/\-//g | \
 while read lin; do
@@ -33,7 +33,7 @@ while read lin; do
         alt=$(echo $lin  | awk '{ print $4 }')
         echo $lat $lon $alt 1>&2
 #        exiftool -GPSLatitude=$lat -GPSLatitudeRef=S -GPSLongitude=$lon -GPSLongitudeRef=W -GPSAltitude=$alt -Make=ixa180 -Model=LMK -FocalLength=55.0 -ImageWidth=9728 -ImageHeight=9984 $img
-        exiftool -GPSLatitude=$lat -GPSLatitudeRef=S -GPSLongitude=$lon -GPSLongitudeRef=W -GPSAltitude=$alt -FocalLength=55.0 $img
+        exiftool -GPSLatitude=$lat -GPSLatitudeRef=S -GPSLongitude=$lon -GPSLongitudeRef=W -GPSAltitude=$alt -GPSAltitudeRef="Above Sea Level" -FocalLength=55.0 $img
     fi
 done
 rm *original;
